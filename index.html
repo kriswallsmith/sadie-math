@@ -109,7 +109,7 @@ var check = function() {
 };
 
 $input.keyup(function(event) {
-    if (awaitingReset) {
+    if (awaitingReset || !$input.val()) {
         return;
     } else if (13 == event.which) {
         check();
