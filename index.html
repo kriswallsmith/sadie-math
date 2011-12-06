@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sadie Math</title>
+<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
+<style type="text/css">
+html, body {
+    background-color: #eee;
+}
+body {
+    padding-top: 40px;
+}
+.container {
+    width: 820px;
+}
+.content {
+    background-color: #fff;
+    padding: 60px;
+    margin: 0 -20px;
+    border-radius: 6px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .15);
+}
+.span6 {
+    font-size: 5em;
+    text-align: right;
+    line-height: 1em;
+}
+input, input:focus {
+    text-align: right;
+    border: none;
+    font-size: 1em;
+    color: #404040;
+    -webkit-transition: none;
+    -webkit-boxshadow: none;
+    box-shadow: none;
+    height: auto;
+    width: 100%;
+    margin-bottom: .25em;
+}
+hr {
+    border-color: #404040;
+}
+.alert-message {
+    text-align: center;
+}
+footer p {
+    text-align: center;
+    color: #999;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+    <div class="content">
+        <div class="row">
+            <div class="span3">&nbsp;</div>
+            <div class="span6">
+                <span id="top"></span><br>
+                + <span id="btm"></span>
+                <hr>
+                <input autofocus>
+                <div class="alert-message success" id="yes" style="display:none">YES!</div>
+                <div class="alert-message error" id="no" style="display:none">NOPE</div>
+            </div>
+            <div class="span3">&nbsp;</div>
+        </div>
+    </div>
+    <footer>
+        <p>Made in 2011 by <a href="http://github.com/kriswallsmith">Kris Wallsmith</a> for his daughter Sadie.</p>
+    </footer>
+</div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="jquery.caret.js"></script>
+<script>
+(function(){
+var $input = $("input"), $yes = $("#yes"), $no = $("#no"), $top = $("#top"), $btm = $("#btm");
+
+var reset = function() {
+    $top.html(Math.round(Math.random() * 100));
+    $btm.html(Math.round(Math.random() * 100));
+    $input.val("").select();
+    $yes.hide();
+    $no.hide();
+};
+reset();
+
+var check = function() {
+    if (parseInt($top.html()) + parseInt($btm.html()) == $input.val()) {
+        $no.hide();
+        $yes.show();
+        setTimeout(reset, 1000);
+    } else {
+        $yes.hide();
+        $no.show();
+        $input.select();
+    }
+};
+
+$input.keyup(function(event) {
+    if (13 == event.which) {
+        check();
+        return;
+    } else if ($input.data("last") == $input.val()) {
+        return;
+    }
+    $input.data("last", $input.val());
+    $input.caretToStart();
+});
+})();
+</script>
+</body>
+</html>
