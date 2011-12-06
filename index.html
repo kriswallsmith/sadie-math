@@ -83,12 +83,15 @@ footer p {
 (function(){
 var $input = $("input"), $yes = $("#yes"), $no = $("#no"), $top = $("#top"), $btm = $("#btm");
 
+var awaitingReset = false;
+
 var reset = function() {
     $top.html(Math.round(Math.random() * 100));
     $btm.html(Math.round(Math.random() * 100));
     $input.val("").select();
     $yes.hide();
     $no.hide();
+    awaitingReset = false;
 };
 reset();
 
@@ -96,6 +99,7 @@ var check = function() {
     if (parseInt($top.html()) + parseInt($btm.html()) == $input.val()) {
         $no.hide();
         $yes.show();
+        awaitingReset = true;
         setTimeout(reset, 1000);
     } else {
         $yes.hide();
@@ -105,7 +109,9 @@ var check = function() {
 };
 
 $input.keyup(function(event) {
-    if (13 == event.which) {
+    if (awaitingReset || !$input.val()) {
+        return;
+    } else if (13 == event.which) {
         check();
         return;
     } else if ($input.data("last") == $input.val()) {
